@@ -5,6 +5,7 @@ const Home = () => {
 
 const [recipes, setRecipes] = useState<Recipes[]>();
 const [recipeSearch, setRecipeSearch] = useState<string>("");
+const [ratingFilter, setRatingFilter] = useState<string>("");
 
  useEffect(() => {
     const fetchRecipes = async () => {
@@ -12,6 +13,10 @@ const [recipeSearch, setRecipeSearch] = useState<string>("");
 
         if (recipeSearch){
             selectQuery = selectQuery.ilike("name", `%${recipeSearch}%`);
+        }
+
+        if (ratingFilter){
+            selectQuery = selectQuery.eq("rating", ratingFilter);
         }
 
         const result = await selectQuery;
@@ -25,12 +30,22 @@ const [recipeSearch, setRecipeSearch] = useState<string>("");
     };
 
     fetchRecipes();
- }, [recipeSearch]);
+ }, [recipeSearch, ratingFilter]);
 
     return ( 
         <main className="recipe-list-container">
             <div className="search-bar">
                 <input type="text" id="recipe-search" placeholder="search for recipe" value={recipeSearch} onChange={(event) => setRecipeSearch(event.target.value)}/>
+            </div>
+            <div className="rating">
+                <select value={ratingFilter} onChange={(event) => setRatingFilter(event.target.value)}>
+                    <option value="">apply rating</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
             </div>
             {recipes?.length === 0 && <p>no recipes found</p>}
             <div className="recipes-wrapper">

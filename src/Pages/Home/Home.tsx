@@ -1,6 +1,9 @@
 import supabaseClient from "../../lib/supabaseClient";
 import { useEffect, useState } from "react";
 import { Recipes } from "../../types/supabase-own-types";
+import { Link } from "react-router-dom";
+
+
 const Home = () => {
 
 const [recipes, setRecipes] = useState<Recipes[]>();
@@ -51,11 +54,13 @@ const [ratingFilter, setRatingFilter] = useState<string>("");
             <div className="recipes-wrapper">
                 {recipes && recipes.length > 0 && recipes.map((recipe) => (
                     <div className="recipe-card" key={recipe.id}>
+                        <Link to={`recipe/${recipe.id}`} >
                         <div className="recipe-img-wrapper">
                             <img src={`${recipe.img_url}`} />
                         </div>
                         <h3>{recipe.name}</h3>
                         <p>{recipe.rating}</p>
+                        </Link>
                     </div>
                 ))}
             </div>
